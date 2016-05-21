@@ -50,14 +50,14 @@
   </style>
 </head>
 <body>
-  <body style="background-color:#EF6E73;">
+  
   <%= image_tag 'background.jpg', :class => "style_image" %>
   <div class="container">
     
     <span class="welcome center-align" style="font-family:나눔고딕;"><h3><font color="white">어둠의 대나무 숲에 오신걸 환영합니다.</font></h3></span><br>
     <!--<span class="welcome center-align"><h2><font color="white">당신의 이야기를 들려주세요.</font></h2></span>-->
     
-    <div class="login-page" style="margin-top:30px;" >
+    <div style="background-color:transparent;"class="login-page" style="margin-top:30px;" >
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       
         <div class="field">
