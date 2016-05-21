@@ -2,44 +2,83 @@
   
   <style>
   .login-page {
+                background-color: rgba(255, 255, 255, 0.3);
                 width: 360px;
                 padding: 8% 0 0;
                 margin: auto;
-                border: 1px solid gray;
+                border: 3px solid white;
                 padding:20px 30px;
+                
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                /* bring your own prefixes */
+                transform: translate(-50%, -50%);
               }
-
+  
+  
+  .style_image {
+    z-index: -1;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .container {
+    z-index: 1;
+    position: relative;
+  }
+  
+  input, label {
+    color: white;
+  }
+  
+  .welcome {
+    width: 1000px;
+    margin: 0 auto;
+    
+    position: fixed;
+    top: 20%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+    
+  }
+  
   </style>
 </head>
-<body background="/assets/imgages/background.png" >
-<div class="container">
-  <h2>Log in</h2>
-  
-  <div  class="login-page">
-    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
-      <div class="field">
-        <%= f.label :email %><br />
-        <%= f.email_field :email, autofocus: true %>
-      </div>
+<body>
+  <body style="background-color:#EF6E73;">
+  <%= image_tag 'background.jpg', :class => "style_image" %>
+  <div class="container">
     
-      <div class="field">
-        <%= f.label :password %><br />
-        <%= f.password_field :password, autocomplete: "off" %>
-      </div>
+    <span class="welcome center-align" style="font-family:나눔고딕;"><h3><font color="white">대나무 숲에 오신걸 환영합니다.</font></h3></span><br>
+    <!--<span class="welcome center-align"><h2><font color="white">당신의 이야기를 들려주세요.</font></h2></span>-->
     
-      <% if devise_mapping.rememberable? -%>
+    <div class="login-page" style="margin-top:30px;" >
+      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      
         <div class="field">
-          <%= f.check_box :remember_me %>
-          <%= f.label :remember_me %>
+          <%= f.label :email %><br />
+          <%= f.email_field :email, autofocus: true %>
         </div>
-      <% end -%>
-      </br>
-      <div class="actions">
-        <%= f.submit "Log in" %>
-      </div>
-    <% end %>
-    
-    <%= render "devise/shared/links" %>
+      
+        <div class="field">
+          <%= f.label :password %><br />
+          <%= f.password_field :password, autocomplete: "off" %>
+        </div>
+        
+        </br>
+        
+        <div class="actions">
+          <%= f.submit "Log in" %>
+        </div>
+        
+      <% end %>
+      
+      <%= render "devise/shared/links" %>
+    </div>
   </div>
-</div>
 </body>

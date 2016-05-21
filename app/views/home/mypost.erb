@@ -1,19 +1,26 @@
 
-    <h3>게시글 목록공간</h3>
-    <div class="card big" style="padding:5px 15px">
-        <% @postsarr.each do |p| %>
-            <a link="#">#<%= p.id %></a><br>
-            <a link="#"><%= p.tags %></a><br>
+<div class="container" style="margin-top:50px;">
+<!--<h1>메인 최신글 보이기</h1> -->
+
+
+    <% @postsarr.each do |p| %>
+    <div class="card big" style="padding:5px 15px;">
+            
+            <p>
+            <a link="#">#멋사어둠의대나무숲<%= p.id %></a><br>
+            태그 : <a link="#"><%= '#' + p.tags %></a><br>
+            </p>
             
             <% if p.email == current_user.email %>
-                <btn><a href="/post/<%= p.id %>/destroy">글 삭제</a></btn>&nbsp;&nbsp;
-                <btn><a href="/post/<%= p.id %>/edit/view">글 수정</a></btn>
+                <a href="/post/<%= p.id %>/destroy"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">clear</i></span></a>&nbsp;&nbsp;
+                <a href="/post/<%= p.id %>/edit/view"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">create</i></span></a>
             <% end %>
             
             <!--사진 띄우기-->
-            <!--<% unless p.image_url.nil? %>-->
-            <!--<img src="<%= p.image_url %>" style="max-width:400px;height:auto">-->
-            <!--<% end %>-->
+            <% unless p.image_url.nil? %>
+            <img src="<%= p.image_url %>" style="max-width:400px;height:auto">
+            <% end %>
+            
             <!--글 내용-->
             <p>
             <%= p.content %>
@@ -23,16 +30,84 @@
             <!--댓글 출력-->
             <div class="comment_space_<%= p.id %>">
             <% p.comments.each do |c| %>
-                <div class="content">
-                <p>익명 : <%= c.content %></p>
-                </div>
+                <!--<div class="content">-->
+                <p style="color:#336699;font-size:12px;font-weight:bold;">익명: <span class="span_destroy"><%= c.content %></span>
+                <!--</div>-->
                 
                 <% if c.email == current_user.email %>
                     <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy'>삭제</a>
-                    <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" class="comment_edit">수정</a>
+                    <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" data-value3="0" class="comment_edit">수정</a>
                 <% end %>
                 <!-- <a href="/post/<%= p.id %>/comment/<%= c.id %>/edit">수정</a> -->
             <% end %>
             </div>
+            
+            
+            <!--댓글 입력-->
+            <!--<input type="text" id="comment_content_<%= p.id %>" name="comment_content_<%= p.id %>">-->
+            <!--<button style="margin-bottom:30px;" class="btn waves-effect waves-light comment_write red" name="action" value="<%= p.id %>" type="submit">댓글 쓰기-->
+            <!--<i class="material-icons right"></i></button><br>-->
+            <!--<button class="btn waves-effect waves-light" type="submit" name="action">Submit-->
+            <!--<i class="material-icons right"></i>-->
+            <!--</button>-->
+        
+        </div>
         <% end %>
-    </div>
+</div>
+<script>
+    //댓글달기
+    $(function(){
+      
+      $(".comment_write").click(function(){
+        
+        post_id = this.value;
+        comment_content = $("#comment_content_" + post_id).val();
+      
+        $.ajax({
+          method: "POST",
+          url: "/post/comment/write",
+          data: { content: comment_content, post_id: post_id },
+          success: function(){
+            alert( "댓글이 만들어졌습니다." );
+            $("#comment_space_" + post_id).append("<p>" + comment_content + "</p>");
+            $("#comment_write_" + post_id).val('');
+          },
+          error: function(){
+            alert( "댓글달기 실패" );
+          }
+        });
+      });
+      
+      $('.comment_edit').click(function(event) {
+         //  event.preventDefault();
+          comment_id = $(this).attr('data-value');
+          post_id = $(this).attr('data-value2');
+          comment = $(this).parent().find('.content > span').text();
+          
+          mode = $(this).attr('data-value3');
+          
+         if (mode == "0") {
+             $(this).parent().find('.content > span').replaceWith("<input type='text' value='" + comment + "'>");
+             $(this).attr('data-value3', "1");
+         } 
+         else {
+             $(this).attr('data-value3', "0");
+             comment_content = $(this).parent().find('.content > input').val();
+             
+             $.ajax({
+              method: "POST",
+              url: "/post/" + post_id + "/comment/" + comment_id + "/edit",
+              data: { content: comment_content, post_id: post_id },
+              success: function(){
+                $('.comment_edit[data-value=' + comment_id + ']').parent().find('.content > input').replaceWith("<span>" + comment_content + "</span>"+ '<br>');
+                  
+              },
+              error: function(){
+              }
+            });
+         }
+      });
+    });    
+</script>
+
+

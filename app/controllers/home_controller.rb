@@ -56,7 +56,7 @@ class HomeController < ApplicationController
     if @post.email == current_user.email
       @post.destroy
     end    
-    redirect_to '/main'
+    redirect_to :back
     
   end
 
@@ -87,30 +87,35 @@ class HomeController < ApplicationController
   def comment_write
     @comment = Comment.new(email: current_user.email, content: params[:content], post_id: params[:post_id])
     @comment.save
-    redirect_to '/main'
+    
+    json = { :comment_id => [@comment.id] }
+    render :json => JSON.pretty_generate(json)
+    
+    # redirect_to '/main'
   end
   
   def comment_destroy
     @comment = Comment.find(params[:comment_id])
     
     if @comment.email != current_user.email
-      redirect_to '/main'
+      redirect_to :back
     else
       @comment.destroy
     end
+      redirect_to :back
   end
   
   def comment_edit
     @comments = Comment.find(params[:comment_id])
     
-    if @comment.email != current_user.email
+    if @comments.email != current_user.email
       redirect_to '/main'
     else
       @comments.content = params[:content]
-      # @comments.image_url = params[:image_url]
       @comments.save
-      redirect_to '/main'
     end
+    
+    redirect_to '/main'
   end
   
   def post_search
@@ -135,4 +140,36 @@ class HomeController < ApplicationController
     end
     
   end
+  
+  def post_search_mypost
+    
+    @words = params[:words]
+    
+    if @words.nil?
+      redirect_to :back
+    end
+    
+    @posts = Post.all
+    @postsarrtemp =[]
+    @posts.each do |post|
+      if post.email == current_user.email
+        @postsarrtemp.push(post)
+      end
+    end
+    
+    @postarr=[]
+    @wordsplit = @words.split
+    
+    @postsarrtemp.each do |p|
+      @wordsplit.each do |w|
+        if p.content.include?(w)
+          @postsarr.push(p)
+          break
+        end
+      end
+    end
+    
+  end  
+  
+  
 end

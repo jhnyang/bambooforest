@@ -1,13 +1,15 @@
-<h3>글작성공간</h3>
-<div class="container_post_write">
-    <form action = "/post/<%= @post.id %>/edit" method="POST">
-        
-        <!--글 내용 작성-->
-        <textarea id ="content" row="20" name="content"><%= @post.content %></textarea>
-        <!--사진 올리기-->
-        <input type="file" name="pic" accept="image/*">
-        <!--태그 작성-->
-        <input type="text" id="tags" name="tags" placeholder="tags" value="<%= @post.tags %>">
-        <button type="submit" id="post_submit">글 쓰기</button>
-    </form>
+<div class="container">
+    <p style="font-size:17px;font-weight:bold">글 수정 페이지입니다.</p>
+    <!--<div class="container">-->
+        <form action = "/post/<%= @post.id %>/edit" method="POST">
+            
+            <!--글 내용 작성-->
+            <textarea id ="content" row="20" name="content"><%= @post.content %></textarea>
+            <!--사진 올리기-->
+            <input type="file" name="pic" accept="image/*">
+            <!--태그 작성-->
+            <input type="text" id="tags" name="tags" placeholder="tags" value="<%= @post.tags %>">
+            <button type="submit" id="post_submit" class="materialize-icons">수정하기</button>
+        </form>
+    <!--</div>-->
 </div>

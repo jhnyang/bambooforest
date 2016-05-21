@@ -18,7 +18,7 @@ Rails.application.routes.draw do
   post '/post/:post_id/comment/:comment_id/edit' => 'home#comment_edit'                  # 글에서 댓글 수정
   
   get '/post/search/' => 'home#post_search'                                              # 글 검색
-  post '/tag/search' => 'home#tag_search'                                                # 태그 검색
+  get '/post/search/mypost' => 'home#post_search_mypost'                                                # 태그 검색
 
 
   # The priority is based upon order of creation: first created -> highest priority.
