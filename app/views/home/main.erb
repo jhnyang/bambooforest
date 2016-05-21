@@ -89,9 +89,9 @@
                     <% if c.email == current_user.email %>
                         <span>
                             <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy' 
-                            style="color:pink;font-size:10px;font-weight:bold;">&nbsp;&nbsp;삭제</a>
+                            style="color:#336699;font-size:11px;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;[삭제]</a>
                             <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" data-value3="0" class="comment_edit" 
-                            style="color:pink;font-size:10px;font-weight:bold;">&nbsp;&nbsp;수정</a>
+                            style="color:#336699;font-size:11px;font-weight:bold;">&nbsp;[수정]</a>
                         </span>
                     <% end %>
                 </p>
