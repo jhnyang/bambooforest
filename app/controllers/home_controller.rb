@@ -116,7 +116,6 @@ class HomeController < ApplicationController
   def post_search
     
     @words = params[:words]
-    type = params[:type]
     
     if @words.nil?
       redirect_to :back
@@ -126,27 +125,14 @@ class HomeController < ApplicationController
     @postsarr = []
     @wordsplit = @words.split
     
-    if type == "A"
-      
-      @posts.each do |p|
-        @wordsplit.each do |w|
-          if p.content.include?(w)
-            @postsarr.push(p)
-            break
-          end
+    @posts.each do |p|
+      @wordsplit.each do |w|
+        if p.content.include?(w)
+          @postsarr.push(p)
+          break
         end
       end
-    elsif type == "B"
-      @posts.each do |p|
-        @wordsplit.each do |w|
-          if p.tags.include?(w)
-            @postsarr.push(p)
-            break
-          end
-        end
-      end
-    elsif type == "C"
-      @post = Post.all.find(@words)
     end
+    
   end
 end
