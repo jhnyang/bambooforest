@@ -57,8 +57,9 @@
     <% @posts.each do |p| %>
     <div class="card big" style="padding:5px 15px;">
             
-            <p>
-            <a link="#">#멋사어둠의대나무숲<%= p.id %></a><br>
+            <p style="color:#336699;font-size:13;font-weight:bold">
+            <!--<a link="#">-->
+                #멋사어둠의대나무숲<%= p.id %></a><br>
             </p>
             
             <% if p.email == current_user.email %>
