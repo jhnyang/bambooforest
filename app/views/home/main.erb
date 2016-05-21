@@ -16,11 +16,11 @@
 <!--<h2>검색하기 글</h2>-->
     <form action = "/post/search" method="GET">
         <input type="text" name="words" placeholder="글 내용 검색">
-        <select>
-          <option value="A" name="type">글 내용</option>
-          <option value="B" name="type">글 태그</option>
-          <option value="C" name="type">글 번호</option>
-        </select>        
+        <select>{ -webkit-appearance:textfield; }
+          <option value="A">글 내용</option>
+          <option value="B">글 태그</option>
+          <option value="C">글 번호</option>
+        </select>
         <button type="submit">검색</button>
     </form>
 <!--<h2>검색하기 태그</h2>-->
@@ -30,7 +30,8 @@
 <!--<h3>글작성공간</h3>-->
 <div class="container">
     <div class="row">
-    <div class="container_post_write" >
+        <br>
+    <!--<div class="container_post_write" >-->
         <div class="card-panel grey lighten-5 z-depth-1">
         <form action = "/post/write" method="POST" enctype="multipart/form-data">
             <div class="row valign-wrapper" style="width:150%;height:auto;">
@@ -54,8 +55,8 @@
             </div>
         </form>
     </div>
+    <!--</div>-->
     </div>
-</div>
     <!---->
     <% @posts.each do |p| %>
     <div class="card big" style="padding:5px 15px;">
