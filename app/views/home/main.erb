@@ -1,0 +1,163 @@
+<nav>
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo right">Logo</a>
+      <ul id="nav-mobile" class="left hide-on-med-and-down">
+        <li><a href="/mypost">내 글보기</a></li>
+        <li><a href="/users/sign_out">로그아웃</a></li>
+        <li><a href="badges.html"></a></li>
+        <li><a href="collapsible.html"></a></li>
+      </ul>
+    </div>
+  </nav>
+
+<div class="container">
+<!--<h1>메인 최신글 보이기</h1> -->
+
+<!--<h2>검색하기 글</h2>-->
+    <form action = "/post/search" method="GET">
+        <input type="text" name="words" placeholder="글 내용 검색">
+        <select>
+          <option value="A" name="type">글 내용</option>
+          <option value="B" name="type">글 태그</option>
+          <option value="C" name="type">글 번호</option>
+        </select>        
+        <button type="submit">검색</button>
+    </form>
+<!--<h2>검색하기 태그</h2>-->
+
+
+
+<!--<h3>글작성공간</h3>-->
+<div class="container">
+    <div class="row">
+    <div class="container_post_write" >
+        <div class="card-panel grey lighten-5 z-depth-1">
+        <form action = "/post/write" method="POST" enctype="multipart/form-data">
+            <div class="row valign-wrapper" style="width:150%;height:auto;">
+            <!--글 내용 입력창-->
+                <div class="input-field col s7">
+                    <textarea id ="content" row="20" class="materialize-textarea" name="content" placeholder="글 내용을 써주세요~"></textarea>
+                </div>&nbsp;&nbsp;
+                
+                <!--태그 작성-->
+                <!--<div class="input-field col s3">-->
+                    <input type="text" id="tags" name="tags" placeholder="태그를 입력해 주세요!">
+                <!--</div>-->
+                
+                <!--사진 올리기-->
+                <input type="file" name="pic" accept="image/*">
+                
+                <!--전송 버튼-->
+                <button class="btn waves-effect waves-light" type="submit" id="post_submit" name="action">Submit
+                    <i class="material-icons right">send</i>
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+</div>
+    <!---->
+    <% @posts.each do |p| %>
+    <div class="card big" style="padding:5px 15px;">
+        
+            <a link="#">#<%= p.id %></a><br>
+            <a link="#"><%= p.tags %></a><br>
+            
+            <% if p.email == current_user.email %>
+                <a href="/post/<%= p.id %>/destroy"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">clear</i></span></a>&nbsp;&nbsp;
+                <a href="/post/<%= p.id %>/edit/view"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">create</i></span></a>
+            <% end %>
+            
+            <!--사진 띄우기-->
+            <% unless p.image_url.nil? %>
+            <img src="<%= p.image_url %>" style="max-width:400px;height:auto">
+            <% end %>
+            
+            <!--글 내용-->
+            <p>
+            <%= p.content %>
+            </p>
+            <br><br>
+            
+            <!--댓글 출력-->
+            <div class="comment_space_<%= p.id %>">
+            <% p.comments.each do |c| %>
+                <div class="content">
+                익명 : <span><%= c.content %></span>
+                </div>
+                
+                <% if c.email == current_user.email %>
+                    <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy'>삭제</a>
+                    <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" data-value3="0" class="comment_edit">수정</a>
+                <% end %>
+                <!-- <a href="/post/<%= p.id %>/comment/<%= c.id %>/edit">수정</a> -->
+            <% end %>
+            </div>
+            
+            
+            <!--댓글 입력-->
+            댓글 작성 <input type="text" id="comment_content_<%= p.id %>" name="comment_content_<%= p.id %>">
+            <button style="margin-bottom:30px;" class="btn waves-effect waves-light comment_write red" name="action" value="<%= p.id %>" type="submit">댓글 쓰기
+            <i class="material-icons right"></i></button><br>
+            <!--<button class="btn waves-effect waves-light" type="submit" name="action">Submit-->
+            <!--<i class="material-icons right"></i>-->
+            <!--</button>-->
+        
+        </div>
+        <% end %>
+</div>
+<script>
+    //댓글달기
+    $(function(){
+      
+      $(".comment_write").click(function(){
+        
+        post_id = this.value;
+        comment_content = $("#comment_content_" + post_id).val();
+      
+        $.ajax({
+          method: "POST",
+          url: "/post/comment/write",
+          data: { content: comment_content, post_id: post_id },
+          success: function(){
+            alert( "댓글이 만들어졌습니다." );
+            $("#comment_space_" + post_id).append("<p>" + comment_content + "</p>");
+            $("#comment_write_" + post_id).val('');
+          },
+          error: function(){
+            alert( "댓글달기 실패" );
+          }
+        });
+      });
+      
+      $('.comment_edit').click(function(event) {
+         //  event.preventDefault();
+          comment_id = $(this).attr('data-value');
+          post_id = $(this).attr('data-value2');
+          comment = $(this).parent().find('.content > span').text();
+          
+          mode = $(this).attr('data-value3');
+          
+         if (mode == "0") {
+             $(this).parent().find('.content > span').replaceWith("<input type='text' value='" + comment + "'>");
+             $(this).attr('data-value3', "1");
+         } 
+         else {
+             $(this).attr('data-value3', "0");
+             comment_content = $(this).parent().find('.content > input').val();
+             
+             $.ajax({
+              method: "POST",
+              url: "/post/" + post_id + "/comment/" + comment_id + "/edit",
+              data: { content: comment_content, post_id: post_id },
+              success: function(){
+                $('.comment_edit[data-value=' + comment_id + ']').parent().find('.content > input').replaceWith("<span>" + comment_content + "</span>");
+                  
+              },
+              error: function(){
+              }
+            });
+         }
+      });
+    });    
+</script>

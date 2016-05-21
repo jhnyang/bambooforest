@@ -1,0 +1,40 @@
+<h1>검색 글 보기입니다.</h1>
+<div class="card big">
+    <h3>게시글 목록공간</h3>
+    <div class="container_article">
+        <% @postsarr.each do |p| %>
+            <a link="#">#<%= p.id %></a><br>
+            <a link="#"><%= p.tags %></a><br>
+            
+            <% if p.email == current_user.email %>
+                <btn><a href="/post/<%= p.id %>/destroy">글 삭제</a></btn>&nbsp;&nbsp;
+                <btn><a href="/post/<%= p.id %>/edit/view">글 수정</a></btn>
+            <% end %>
+            
+            <!--사진 띄우기-->
+            <!--<% unless p.image_url.nil? %>-->
+            <!--<img src="<%= p.image_url %>" style="max-width:400px;height:auto">-->
+            <!--<% end %>-->
+            <!--글 내용-->
+            <p>
+            <%= p.content %>
+            </p>
+            <br><br>
+            
+            <!--댓글 출력-->
+            <div class="comment_space_<%= p.id %>">
+            <% p.comments.each do |c| %>
+                <div class="content">
+                <p>익명 : <%= c.content %></p>
+                </div>
+                
+                <% if c.email == current_user.email %>
+                    <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy'>삭제</a>
+                    <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" class="comment_edit">수정</a>
+                <% end %>
+                <!-- <a href="/post/<%= p.id %>/comment/<%= c.id %>/edit">수정</a> -->
+            <% end %>
+            </div>
+        <% end %>
+    </div>
+</div>
