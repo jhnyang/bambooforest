@@ -35,12 +35,19 @@
                 <!--</div>-->
                 
                 <% if c.email == current_user.email %>
-                    <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy'>삭제</a>
-                    <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" data-value3="0" class="comment_edit">수정</a>
+                    <span>
+                        <a href='/post/<%= p.id %>/comment/<%= c.id %>/destroy' 
+                        style="color:#336699;font-size:11px;font-weight:bold;">&nbsp;&nbsp;&nbsp;&nbsp;[삭제]</a>
+                        <a href='#' data-value="<%= c.id %>" data-value2="<%= p.id %>" data-value3="0" class="comment_edit" 
+                        style="color:#336699;font-size:11px;font-weight:bold;">&nbsp;[수정]</a>
+                    </span>
                 <% end %>
                 <!-- <a href="/post/<%= p.id %>/comment/<%= c.id %>/edit">수정</a> -->
             <% end %>
             </div>
+            <input type="text" id="comment_content_<%= p.id %>" placeholder="내용" name="comment_content_<%= p.id %>" style="width:77%">&nbsp;&nbsp;
+            <button style="margin-bottom:30px;" class="btn waves-effect waves-light comment_write red" name="action" value="<%= p.id %>" type="submit"style="width:23%;">댓글 쓰기
+            <i class="material-icons right"></i></button><br>
             
             
             <!--댓글 입력-->
@@ -58,6 +65,13 @@
     //댓글달기
     $(function(){
       
+      $('#search_box').keyup(function(e) {
+          if (e.keycode == 13) {
+              /* Enter */
+              $('#search_form').submit();
+          }
+      });
+      
       $(".comment_write").click(function(){
         
         post_id = this.value;
@@ -67,47 +81,49 @@
           method: "POST",
           url: "/post/comment/write",
           data: { content: comment_content, post_id: post_id },
-          success: function(){
-            alert( "댓글이 만들어졌습니다." );
-            $("#comment_space_" + post_id).append("<p>" + comment_content + "</p>");
-            $("#comment_write_" + post_id).val('');
+          datatype: 'json',
+          success: function(data){
+            var html =  "<span><a href='/post/" + post_id + "/comment/" + data.comment_id[0] + "/destroy'" + 
+                        "style='color:#336699;font-size:11px;font-weight:bold;'>&nbsp;&nbsp;&nbsp;&nbsp;[삭제]</a> " +
+                        "<a href='#' data-value='" + data.comment_id[0] + "' data-value2='" + post_id + "' data-value3='0' class='comment_edit' " +
+                        "style='color:#336699;font-size:10px;font-weight:bold;'>[수정]</a></span>";
+                        
+            $(".comment_space_" + post_id).prepend("<p style='color:#336699;font-size:12px;font-weight:bold;'>익명: <span class='span_destroy'>" + comment_content + "</span>" + html + "</p>");
+            $("#comment_content_" + post_id).val('');
           },
           error: function(){
-            alert( "댓글달기 실패" );
           }
         });
       });
       
-      $('.comment_edit').click(function(event) {
-         //  event.preventDefault();
+      $('body').on('click', '.comment_edit', function(event) {
           comment_id = $(this).attr('data-value');
           post_id = $(this).attr('data-value2');
-          comment = $(this).parent().find('.content > span').text();
+          comment = $(this).parent().parent().find('span.span_destroy').text();
           
           mode = $(this).attr('data-value3');
           
          if (mode == "0") {
-             $(this).parent().find('.content > span').replaceWith("<input type='text' value='" + comment + "'>");
+             $(this).parent().parent().find('span.span_destroy').replaceWith("<input type='text' value='" + comment + "'>");
              $(this).attr('data-value3', "1");
          } 
          else {
              $(this).attr('data-value3', "0");
-             comment_content = $(this).parent().find('.content > input').val();
+             comment_content = $(this).parent().parent().find('input').val();
              
              $.ajax({
               method: "POST",
               url: "/post/" + post_id + "/comment/" + comment_id + "/edit",
-              data: { content: comment_content, post_id: post_id },
+              data: { content: comment_content },
               success: function(){
-                $('.comment_edit[data-value=' + comment_id + ']').parent().find('.content > input').replaceWith("<span>" + comment_content + "</span>"+ '<br>');
-                  
+                  $('.comment_edit[data-value=' + comment_id + ']').parent().parent().find('input').replaceWith("<span class='span_destroy'>" + comment_content + "</span>");
               },
               error: function(){
               }
             });
          }
+         
+         event.preventDefault();
       });
     });    
 </script>
-
-
