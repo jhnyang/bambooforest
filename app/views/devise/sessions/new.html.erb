@@ -1,84 +1,79 @@
-<head>
+<style>
+.card-panel {
+  width: 360px;
+  padding: 8% 0 0;
+  margin: auto;
+  border: 3px solid white;
+  padding:20px 30px;
   
-  <style>
-  .login-page {
-                background-color: rgba(255, 255, 255, 0.3);
-                width: 360px;
-                padding: 8% 0 0;
-                margin: auto;
-                border: 3px solid white;
-                padding:20px 30px;
-                
-                position: fixed;
-                top: 50%;
-                left: 50%;
-                /* bring your own prefixes */
-                transform: translate(-50%, -50%);
-              }
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.style_image {
+  z-index: -1;
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.body {
+  font-family:나눔고딕;
+}
+
+.container {
+  z-index: 1;
+  position: relative;
+}
+
+input, label {
+  color: white;
+}
+
+.welcome {
+  width: 1000px;
+  margin: 0 auto;
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+</style>
+
+<%= image_tag 'background.jpg', :class => "style_image" %>
+<div class="container">
   
+  <h3 class="welcome center-align white-text">어둠의 대나무 숲에 오신걸 환영합니다.</h3>
   
-  .style_image {
-    z-index: -1;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    width: 100%;
-    height: 100%;
-  }
-  
-  .container {
-    z-index: 1;
-    position: relative;
-  }
-  
-  input, label {
-    color: white;
-  }
-  
-  .welcome {
-    width: 1000px;
-    margin: 0 auto;
+  <div class="card-panel hoverable transparent" >
+    <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
     
-    position: fixed;
-    top: 20%;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, -50%);
+      <div class="field">
+        <p class="white-text center-align">이메일</p>
+        <%= f.email_field :email, autofocus: true, autocomplete: "off", placeholder: "이메일", class: "center-align" %>
+      </div>
     
-  }
-  
-  </style>
-</head>
-<body>
-  
-  <%= image_tag 'background.jpg', :class => "style_image" %>
-  <div class="container">
-    
-    <span class="welcome center-align" style="font-family:나눔고딕;"><h3><font color="white">어둠의 대나무 숲에 오신걸 환영합니다.</font></h3></span><br>
-    <!--<span class="welcome center-align"><h2><font color="white">당신의 이야기를 들려주세요.</font></h2></span>-->
-    
-    <div style="background-color:transparent;"class="login-page" style="margin-top:30px;" >
-      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+      <div class="field">
+        <p class="white-text center-align">비밀번호</p>
+        <%= f.password_field :password, autocomplete: "off", placeholder: "비밀번호", class: "center-align" %>
+      </div>
       
-        <div class="field">
-          <%= f.label :email %><br />
-          <%= f.email_field :email, autofocus: true %>
-        </div>
+      <br>
       
-        <div class="field">
-          <%= f.label :password %><br />
-          <%= f.password_field :password, autocomplete: "off" %>
+      <div class="row">
+        <div class="actions center-align">
+          <button class="btn waves-effect waves-light col s8 offset-s2" type="submit" name="login">로그인</button>
         </div>
-        
-        </br>
-        
-        <div class="actions">
-          <%= f.submit "Log in" %>
-        </div>
-        
-      <% end %>
+      </div>
       
-      <%= render "devise/shared/links" %>
-    </div>
+    <% end %>
+    
+    <%= render "devise/shared/links" %>
   </div>
-</body>
+</div>

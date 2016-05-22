@@ -1,0 +1,17 @@
+<% if object.errors.any? %>
+  <div id="error_explanation">
+    <div class="alert alert-danger alert-dismissable white-text">
+      <!--<p><strong>This form contains <%= pluralize(object.errors.count, 'errors') %>.</strong></p>-->
+      <ul>
+          <li>< 회원가입 오류 발생! ></li>
+        <% object.errors.full_messages.each do |msg| %>
+            <% if msg == "Password confirmation doesn't match Password" %>
+                <li class="red-text darken-4"><b>패스워드를 일치시켜 주십시오!</b></li>
+            <% elsif msg.include?("Password is too short") %>
+                <li class="red-text darken-4"><b>패스워드의 길이가 짧습니다!</b></li>
+            <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
