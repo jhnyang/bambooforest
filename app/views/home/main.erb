@@ -1,3 +1,7 @@
+<style>
+    
+</style>
+
 <!--https://docs.google.com/forms/d/1ga7PbSPx9JugeQNa9nYf_9BTfP_WWbd0vZLlVr3_6bw/viewform-->
 <div class="container">
 <!--<h1>메인 최신글 보이기</h1> -->
@@ -6,14 +10,12 @@
 <!--<h2>검색하기 글</h2>-->
     <form id="search_form" action = "/post/search" method="GET" style="margin-top: 30px;" >
         <div class="row">
-            <div class="input-field col s12">
-                <input type="text" class="materialize-textarea" id="words" name="words" placeholder="글 검색하기">
-                <button type="submit" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">search</i></button>
-                <!--<button type="submit"><i class="material-icons">search</i></button>-->
-              <!--<label for="icon_prefix">글 검색하기</label>-->
-              <!--<i class="material-icons prefix">search</i>-->
-              <!--<input id="search_box" name="words" type="text" class="validate">-->
-            </div>
+            <input type="text" class="materialize-textarea col s11" id="words" name="words" placeholder="글 검색하기">
+            <button type="submit" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="material-icons">search</i></button>
+            <!--<button type="submit"><i class="material-icons">search</i></button>-->
+          <!--<label for="icon_prefix">글 검색하기</label>-->
+          <!--<i class="material-icons prefix">search</i>-->
+          <!--<input id="search_box" name="words" type="text" class="validate">-->
         </div>
     </form>
 <!--<h2>검색하기 태그</h2>-->
@@ -30,7 +32,7 @@
             <div style="width:100%;height:250px;">
             <!--글 내용 입력창-->
                 <div class="input-field col s5" style="display:block;">
-                    <textarea id ="content" style="min-height:10px!important; height:1rem" class="materialize-textarea" name="content" placeholder="내용을 써봐"></textarea>
+                    <textarea id ="content" class="materialize-textarea" row="10" name="content" placeholder="내용을 써봐"></textarea>
                 </div>
                 <!--태그 작성-->
                 <div class="input-field col s5 style="display:block;"">
@@ -39,7 +41,8 @@
                 <!--사진 올리기-->
                 <input style="margin-bottom:10px;"type="file" name="pic" accept="image/*"></br>
                 <!--전송 버튼-->
-                <button class="btn waves-effect waves-light red " type="submit" id="post_submit" name="action" style="margin-top:10px;">Submit
+                <button class="btn waves-effect waves-light red " type="submit" id="post_submit" name="action" style="margin-top:10px;">
+                    작성하기
                     <i class="material-icons right">send</i>
                 </button>
             </div>
@@ -55,7 +58,7 @@
     
     
     <% @posts.each do |p| %>
-    <div class="card big" style="padding:5px 15px;">
+    <div class="card big hoverable" style="padding:5px 15px;">
             
             <p style="color:#336699;font-size:13;font-weight:bold">
             <!--<a link="#">-->
@@ -103,10 +106,11 @@
             
             <!--댓글 입력-->
             <!--댓글 작성 -->
-            <input type="text" id="comment_content_<%= p.id %>" placeholder="내용" name="comment_content_<%= p.id %>" style="width:77%">&nbsp;&nbsp;
-            <button style="margin-bottom:30px;" class="btn waves-effect waves-light comment_write red" name="action" value="<%= p.id %>" type="submit"style="width:23%;">댓글 쓰기
-            <i class="material-icons right"></i></button><br>
-           
+            <div class="row" style="padding-left: 10px; padding-right: 10px;">
+                <input type="text" id="comment_content_<%= p.id %>" placeholder="내용" name="comment_content_<%= p.id %>" class="col s11">
+                <button style="" class="btn waves-effect waves-light comment_write red col s1" name="action" value="<%= p.id %>" type="submit"style="width:23%;">댓글 작성
+                <i class="material-icons right"></i></button>
+            </div>
         
         </div>
         <% end %>
