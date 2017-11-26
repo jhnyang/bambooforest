@@ -1,6 +1,7 @@
 require 'json'
 
 class HomeController < ApplicationController
+  before_action :authenticate_user!
   
   MainPageCount = 10
   
@@ -10,11 +11,7 @@ class HomeController < ApplicationController
   
   def main
     # 로그인 후 메인 페이지
-    if user_signed_in?
-      @posts = Post.all.reverse.take(MainPageCount)
-    else
-      redirect_to '/users/sign_in'
-    end
+    @posts = Post.all.reverse.take(MainPageCount)
   end
   
   def mypost

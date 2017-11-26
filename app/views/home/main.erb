@@ -1,73 +1,102 @@
 <style>
+    #search_form {
+        margin-top: 30px;
+    }
+    
+    #write_form {
+        width: 100%;
+        overflow-y: auto;
+    }
+    
+    .bamboonumber {
+        color:#336699;
+        font-size:13;
+        font-weight:bold
+    }
+    
+    .container {
+        
+    }
+    
+    body {
+        
+    }
+
+    nav {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .style_image {
+      z-index: -1;
+      position: fixed;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 100%;
+      opacity: 0.7;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+    }
+    
+    #searchbtn {
+        float: right;
+    }
     
 </style>
 
-<!--https://docs.google.com/forms/d/1ga7PbSPx9JugeQNa9nYf_9BTfP_WWbd0vZLlVr3_6bw/viewform-->
+<%= image_tag 'background.jpg', :class => "style_image" %>
 <div class="container">
-<!--<h1>메인 최신글 보이기</h1> -->
 
-
-<!--<h2>검색하기 글</h2>-->
-    <form id="search_form" action = "/post/search" method="GET" style="margin-top: 30px;" >
-        <div class="row">
-            <input type="text" class="materialize-textarea col s11" id="words" name="words" placeholder="글 검색하기">
-            <button type="submit" class="btn-floating btn-large waves-effect waves-light red" style="float: right;"><i class="material-icons">search</i></button>
-            <!--<button type="submit"><i class="material-icons">search</i></button>-->
-          <!--<label for="icon_prefix">글 검색하기</label>-->
-          <!--<i class="material-icons prefix">search</i>-->
-          <!--<input id="search_box" name="words" type="text" class="validate">-->
+<!-- 검색 공간 -->
+    <form id="search_form" action = "/post/search" method="GET">
+        <div class="row input-field">
+            <div class="col s11">
+                <input type="text" class="materialize-textarea" id="words" name="words">
+                <label for="words">검색할 글 내용</label>
+            </div>
+            <button id="searchbtn" type="submit" class="btn-floating btn-large waves-effect waves-light orange"><i class="material-icons">search</i></button>
         </div>
     </form>
-<!--<h2>검색하기 태그</h2>-->
 
-
-
-<!--<h3>글작성공간</h3>-->
-<div style="align:center;">
-    <!--<div class="row">-->
-        <br>
-    <!--<div class="container_post_write" >-->
-        <div class="card-panel grey lighten-5 z-depth-1" style="width:100%;height:330px; overflow-y:auto;">
-        <form action = "/post/write" method="POST" enctype="multipart/form-data">
-            <div style="width:100%;height:250px;">
-            <!--글 내용 입력창-->
-                <div class="input-field col s5" style="display:block;">
-                    <textarea id ="content" class="materialize-textarea" row="10" name="content" placeholder="내용을 써봐"></textarea>
-                </div>
-                <!--태그 작성-->
-                <div class="input-field col s5 style="display:block;"">
-                    <input class="materialize-textarea" type="text" id="tags" name="tags" placeholder="태그도 넣어봐~">
-                </div>
-                <!--사진 올리기-->
-                <input style="margin-bottom:10px;"type="file" name="pic" accept="image/*"></br>
-                <!--전송 버튼-->
-                <button class="btn waves-effect waves-light red " type="submit" id="post_submit" name="action" style="margin-top:10px;">
-                    작성하기
-                    <i class="material-icons right">send</i>
-                </button>
+<!-- 글 작성 -->
+    <form id="write_form" action = "/post/write" method="POST" enctype="multipart/form-data" class="card-panel grey lighten-5 z-depth-1 center-align">
+        <div class="row">
+            <div class="input-field col s12">
+                <textarea id="content" class="materialize-textarea" rows="10" name="content"></textarea>
+                <label for="content">글 내용</label>
             </div>
-        </form>
-    </div>
-    <!--</div>-->
-    <!--</div>-->
-    <!---->
-    
-    
-  </div>  
+            <div class="input-field col s12">
+                <input class="materialize-textarea" type="text" id="tags" name="tags">
+                <label for="tags">태그</label>
+            </div>
+            <div class="file-field input-field col s12">
+              <div class="btn">
+                <span>이미지 파일 업로드</span>
+                <input type="file" name="pic" accept="image/*">
+              </div>
+              <div class="file-path-wrapper">
+                <input class="file-path validate" type="text">
+              </div>
+            </div>
+            <button class="btn waves-effect waves-light red " type="submit" id="post_submit" name="action" style="margin-top:10px;">
+                작성하기
+                <i class="material-icons right">send</i>
+            </button>
+        </div>
+    </form>
     
     
     
     <% @posts.each do |p| %>
     <div class="card big hoverable" style="padding:5px 15px;">
             
-            <p style="color:#336699;font-size:13;font-weight:bold">
-            <!--<a link="#">-->
-                #멋사어둠의대나무숲<%= p.id %></a><br>
+            <p class="bamboonumber">
+                #멋사어둠의대나무숲<%= p.id %>
             </p>
             
             <% if p.email == current_user.email %>
-                <a href="/post/<%= p.id %>/destroy"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">clear</i></span></a>&nbsp;&nbsp;
-                <a href="/post/<%= p.id %>/edit/view"><span><i class="material-icons" style="color:black;float:right;padding:5px 0 0 0">create</i></span></a>
+                <a href="/post/<%= p.id %>/destroy"><span><i class="material-icons" style="color:black; float:right; padding:5px 0 0 0">clear</i></span></a>&nbsp;&nbsp;
+                <a href="/post/<%= p.id %>/edit/view"><span><i class="material-icons" style="color:black; float:right; padding:5px 0 0 0">create</i></span></a>
             <% end %>
             
             <!--사진 띄우기-->

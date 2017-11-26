@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   # get 'login' => 'home#login'                                                           # 로그인 전 화면 ( 뷰파일 )
   get 'main' => 'home#main'                                                             # 로그인 후 화면, 10개 보여주는 페이지 ( 뷰파일 )
   get "/mypost" => "home#mypost"                                                                          #내 글 보기
-  post '/post/write' => 'home#post_write'                                                # 글 작성
+  post '/post/write' => 'home#post_write'                                               # 글 작성
   get '/post/:post_id/destroy' => 'home#post_destory'                                   # 글 삭제
   post '/post/:post_id/edit' => 'home#post_edit'                                         # 수정이 실제로 일어나는 페이지
   get '/post/:post_id/edit/view' => 'home#post_edit_view'        

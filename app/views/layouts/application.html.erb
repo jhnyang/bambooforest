@@ -17,21 +17,26 @@
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => false %>
   
   <%= csrf_meta_tags %>
-   
+  
+  <style>
+  
+  </style>
+  
 </head>
 <body>
 <% if user_signed_in? %>
-  <nav>
-      <div class="nav-wrapper">
-        <!--<a href="#" class="brand-logo right">Logo</a>-->
-        <ul id="nav-mobile" class="left hide-on-med-and-down">
-          <li><a href="/main">메인가기</a></li>
-          <li><a href="/mypost">내 글보기</a></li>
-          <li><a href="/users/sign_out">로그아웃</a></li>
-          <li><a href="collapsible.html"></a></li>
-        </ul>
-      </div>
-  </nav>
+  <div class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+          <a href="/" class="brand-logo center">멋쟁이 사자처럼 어둠의 대나무 숲</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/mypost">내 글보기</a></li>
+            <li><a href="/users/sign_out">로그아웃</a></li>
+            <li><a href="collapsible.html"></a></li>
+          </ul>
+        </div>
+    </nav>
+  </div>
 <% end %>
 <%= yield %>
 
